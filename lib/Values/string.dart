@@ -1,4 +1,6 @@
-String loginLabel = "Login";
-String registerLabel = "Regsiter";
-String forgetPassSentence = "Forget your password?";
-String haveAccount = "I have already an account.";
+String loginLabel = "ورود";
+String registerLabel = "ثبت نام";
+String forgetPassSentence = "رمز عبور خود را فراموش کردم...";
+String haveAccount = "استفاده از اکانت های قبلی";
+String chartTitle = "نمودار ها";
+String tableTitle = "جدول هفتگی";

@@ -1,3 +1,4 @@
+import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
 import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,12 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool _passwordObscure = true;
+
+  BoxDecoration getBackGroundBoxDecor() {
+    return BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/img/start_page.jpg"), fit: BoxFit.cover));
+  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -105,8 +112,21 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Colors.white,
                         decoration: TextDecoration.underline)))));
   }
-}
 
-Future navigateToSubPage(context, Widget w) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => w));
+  Widget getMatchParentWidthButton(String text, Function f, List margin) {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
+        child: SizedBox(
+            width: double.infinity,
+            height: 45,
+            child: new RaisedButton(
+              onPressed: f,
+              child: getButtonText(text),
+            )));
+  }
+
+  Text getButtonText(String text) {
+    return Text(text, textDirection: TextDirection.ltr, style: buttonTextStyle);
+  }
+
 }

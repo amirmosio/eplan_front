@@ -1,7 +1,56 @@
+import 'package:eplanfront/Pages/StudentMainPage.dart';
+import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
 import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 
+///////////// Demo data //////////////
+final columns = 7;
+final rows = 13;
+var haft = [
+  'شنبه',
+  'یکشنبه',
+  'دوشنبه',
+  'سه شنبه',
+  'چهارشنبه',
+  'پنجشنبه',
+  'جمعه'
+];
+var dark = [
+  'دیفرانسیل',
+  'جبر و احتال',
+  'گسسته',
+  'حسابان',
+  'فیزیک پیش',
+  'فیزیک پیش',
+  'قیزیک3',
+  'شیمی 2',
+  'شیمی پیش',
+  'عربی',
+  'قرابت معنایی',
+  'دینی پیش',
+  'پیام آیه'
+];
+
+List<List<String>> _makeData() {
+  final List<List<String>> output = [];
+  for (int i = 0; i < columns; i++) {
+    final List<String> row = [];
+    for (int j = 0; j < rows; j++) {
+      row.add('T$i : L$j');
+    }
+    output.add(row);
+  }
+  return output;
+}
+
+/// Simple generator for column title
+List<String> _makeTitleColumn() => List.generate(columns, (i) => haft[i]);
+
+/// Simple generator for row title
+List<String> _makeTitleRow() => List.generate(rows, (i) => dark[i]);
+
+///////////////////// Demo data
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
 
@@ -14,25 +63,32 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _passwordObscure = true;
 
+  BoxDecoration getBackGroundBoxDecor() {
+    return BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/img/start_page.jpg"), fit: BoxFit.cover));
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Welcome to Flutter',
         home: new Scaffold(
             body: Container(
-          decoration: getBackGroundBoxDecor(),
-          child: new Column(
-            verticalDirection: VerticalDirection.down,
-            children: <Widget>[
-              getTitleText(loginLabel),
-              getUsernameTextField("Username"),
-              getPasswordTextField(),
-              getMatchParentWidthButton(loginLabel, () {
-                navigateToSubPage(context, LoginPage());
-              }, [ 0.0, 20.0]),
-              getForgetPasswordText()
-            ],
-          ),
-        )));
+              height: MediaQuery.of(context).size.height,
+                decoration: getBackGroundBoxDecor(),
+                child: new SingleChildScrollView(
+                    child: new Column(
+                  verticalDirection: VerticalDirection.down,
+                  children: <Widget>[
+                    getTitleText(loginLabel),
+                    getUsernameTextField("Username"),
+                    getPasswordTextField(),
+                    getMatchParentWidthButton(loginLabel, () {
+                      navigateToSubPage(context, UserPage(data: _makeData(), titleColumn: _makeTitleColumn(), titleRow: _makeTitleRow()));
+                    }, [0.0, 20.0]),
+                    getForgetPasswordText()
+                  ],
+                )))));
   }
 
   void _toggle() {
@@ -87,8 +143,20 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white,
                         decoration: TextDecoration.underline)))));
   }
-}
 
-Future navigateToSubPage(context, Widget w) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => w));
+  Widget getMatchParentWidthButton(String text, Function f, List margin) {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
+        child: SizedBox(
+            width: double.infinity,
+            height: 45,
+            child: new RaisedButton(
+              onPressed: f,
+              child: getButtonText(text),
+            )));
+  }
+
+  Text getButtonText(String text) {
+    return Text(text, textDirection: TextDirection.ltr, style: buttonTextStyle);
+  }
 }
