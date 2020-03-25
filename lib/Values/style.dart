@@ -13,5 +13,5 @@ Widget getTitleText(String title) {
       padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
       child: new Center(
           child: Text(title,
-              style: TextStyle(fontSize: 25, color: Colors.white))));
+              style: TextStyle(fontSize: 25, color: Colors.black))));
 }

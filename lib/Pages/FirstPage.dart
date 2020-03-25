@@ -14,7 +14,15 @@ class FirstPage extends StatefulWidget {
   _FirstPageState createState() => _FirstPageState();
 }
 
-class _FirstPageState extends State<FirstPage> {
+class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
+  bool toggle;
+
+  @override
+  void initState() {
+    super.initState();
+    toggle = true;
+  }
+
   BoxDecoration getBackGroundBoxDecor() {
     return BoxDecoration(
         image: DecorationImage(
@@ -28,15 +36,7 @@ class _FirstPageState extends State<FirstPage> {
           decoration: getBackGroundBoxDecor(),
           child: new Column(
             verticalDirection: VerticalDirection.up,
-            children: <Widget>[
-              getMatchParentWidthButton(registerLabel, () {
-                navigateToSubPage(context, RegisterPage());
-              }, [0.0, 20.0]),
-              getMatchParentWidthButton(loginLabel, () {
-                navigateToSubPage(context, LoginPage());
-              }, [0.0, 20.0]),
-              getIntroText()
-            ],
+            children: <Widget>[getStartAnimation(), getIntroText()],
           ),
         ));
   }
@@ -50,9 +50,39 @@ class _FirstPageState extends State<FirstPage> {
             style: TextStyle(fontSize: 25, color: Colors.white)));
   }
 
+  Widget getStartAnimation() {
+    return AnimatedCrossFade(
+      firstChild: getStartButton(),
+      secondChild: new Column(
+        children: <Widget>[
+          getMatchParentWidthButton(registerLabel, () {
+            navigateToSubPage(context, RegisterPage());
+          }, [0.0, 20.0]),
+          getMatchParentWidthButton(loginLabel, () {
+            navigateToSubPage(context, LoginPage());
+          }, [0.0, 20.0]),
+        ],
+      ),
+      duration: const Duration(milliseconds: 500),
+      crossFadeState:
+          toggle ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+    );
+  }
+
+  Widget getStartButton() {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            toggle = !toggle;
+          });
+        },
+        child: new Container(child: Icon(Icons.play_circle_filled,size: 150,color: Colors.white,),padding: EdgeInsets.fromLTRB(0, 0, 0, 100),));
+  }
+
   Widget getMatchParentWidthButton(String text, Function f, List margin) {
     return new Container(
-      decoration: new BoxDecoration(borderRadius: new BorderRadius.all(Radius.circular(20))),
+      decoration: new BoxDecoration(
+          borderRadius: new BorderRadius.all(Radius.circular(20))),
       child: new Padding(
         padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
         child: SizedBox(

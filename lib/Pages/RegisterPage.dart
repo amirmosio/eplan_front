@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, margin[0], 20, margin[1]),
         child: TextFormField(
-            style: TextStyle(fontSize: 19),
+            style: TextStyle(fontSize: 18),
             obscureText: _passwordObscure,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock),
@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, margin[0], 20, margin[1]),
         child: TextField(
-            style: TextStyle(fontSize: 19),
+            style: TextStyle(fontSize: 18),
             obscureText: false,
             decoration: InputDecoration(
               prefixIcon: prefixIcon,
@@ -115,19 +115,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget getMatchParentWidthButton(String text, Function f, List margin) {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
-        child: SizedBox(
-            width: double.infinity,
-            height: 45,
-            child: new RaisedButton(
-              color: Colors.lightBlue,
-              onPressed: f,
-              child: getButtonText(text),
-            )));
+      padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
+      child: SizedBox(
+        width: double.infinity,
+        height: 45,
+        child: new RaisedButton(
+          color: Colors.lightBlue,
+          onPressed: f,
+          child: getButtonText(text),
+        ),
+      ),
+    );
   }
 
   Text getButtonText(String text) {
     return Text(text, textDirection: TextDirection.ltr, style: buttonTextStyle);
   }
-
 }

@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 50),
         child: TextField(
-            style: TextStyle(fontSize: 19),
+            style: TextStyle(fontSize: 18),
             obscureText: _passwordObscure,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock),
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: TextField(
-            style: TextStyle(fontSize: 19),
+            style: TextStyle(fontSize: 18),
             obscureText: false,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.supervisor_account),
