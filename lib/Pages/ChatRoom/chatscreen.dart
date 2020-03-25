@@ -57,13 +57,13 @@ class ChatScreenState extends State<ChatScreen> {
               children: <Widget>[
                 new Flexible(
                     child: new Container(
-                      padding: EdgeInsets.fromLTRB(15, 10, 10, 10) ,
+                        padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
                         child: new TextField(
-                  decoration: new InputDecoration.collapsed(
-                      hintText: "Starts typing ..."),
-                  controller: _chatController,
-                  onSubmitted: _handleSubmit,
-                ))),
+                          decoration: new InputDecoration.collapsed(
+                              hintText: "Starts typing ..."),
+                          controller: _chatController,
+                          onSubmitted: _handleSubmit,
+                        ))),
                 new Container(
                   padding: EdgeInsets.all(5),
                   child: new IconButton(
@@ -114,5 +114,6 @@ class ChatScreenState extends State<ChatScreen> {
   void dispose() {
     widget.channel.sink.close();
     super.dispose();
+    print("hello");
   }
 }

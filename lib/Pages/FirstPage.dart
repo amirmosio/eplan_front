@@ -5,7 +5,6 @@ import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 
-
 class FirstPage extends StatefulWidget {
   FirstPage({Key key, this.title}) : super(key: key);
 
@@ -52,15 +51,21 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   Widget getMatchParentWidthButton(String text, Function f, List margin) {
-    return new Padding(
+    return new Container(
+      decoration: new BoxDecoration(borderRadius: new BorderRadius.all(Radius.circular(20))),
+      child: new Padding(
         padding: EdgeInsets.fromLTRB(20.0, margin[0], 20.0, margin[1]),
         child: SizedBox(
-            width: double.infinity,
-            height: 45,
-            child: new RaisedButton(
-              onPressed: f,
-              child: getButtonText(text),
-            )));
+          width: double.infinity,
+          height: 45,
+          child: new RaisedButton(
+            color: Colors.white,
+            onPressed: f,
+            child: getButtonText(text),
+          ),
+        ),
+      ),
+    );
   }
 
   Text getButtonText(String text) {

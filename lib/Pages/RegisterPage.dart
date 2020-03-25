@@ -120,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
             width: double.infinity,
             height: 45,
             child: new RaisedButton(
+              color: Colors.white,
               onPressed: f,
               child: getButtonText(text),
             )));

@@ -51,6 +51,8 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   Widget _currentPage;
   String _currentTitle;
+  int _selectedIndex = 0;
+
   ChatScreen chatRoom;
   StickyHeadersTable studentTable;
   StudentStudyChart studentStudyChart;
@@ -73,38 +75,46 @@ class _UserPageState extends State<UserPage> {
             title: Text(_currentTitle == null ? tableTitle : _currentTitle),
             backgroundColor: Colors.lightBlue,
           ),
-          bottomNavigationBar: new Container(
-              color: Colors.lightBlue,
-              height: 50.0,
-              alignment: Alignment.center,
-              child: new BottomAppBar(
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    new IconButton(
-                      icon: new Icon(Icons.home, color: Colors.black),
-                      onPressed: () {
-                        _studentTableState();
-                      },
-                    ),
-                    new IconButton(
-                        icon: new Icon(Icons.message, color: Colors.black),
-                        onPressed: () {
-                          _chatRoomState();
-                        }),
-                    new IconButton(
-                        icon: new Icon(Icons.show_chart, color: Colors.black),
-                        onPressed: () {
-                          _studentChartState();
-                        }),
-                    new IconButton(
-                        icon: new Icon(Icons.account_box, color: Colors.black),
-                        onPressed: null)
-                  ],
-                ),
-              )),
+          bottomNavigationBar: BottomNavigationBar(
+//            selectedLabelStyle: ,
+
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home, color: Colors.black),
+                title: Text('خانه'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.message, color: Colors.black),
+                title: Text('چت روم'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.show_chart, color: Colors.black),
+                title: Text('نمودارها'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_box, color: Colors.black),
+                title: Text('پروفایل'),
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
+          ),
           body: _currentPage == null ? getNewStickyTable() : _currentPage),
     );
+  }
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      _studentTableState();
+    } else if (index == 1) {
+      _chatRoomState();
+    } else if (index == 2) {
+      _studentChartState();
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   Widget getNewStickyTable() {

@@ -151,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             height: 45,
             child: new RaisedButton(
+              color: Colors.white,
               onPressed: f,
               child: getButtonText(text),
             )));
