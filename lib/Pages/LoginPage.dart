@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
         home: new Scaffold(
             body: Container(
               height: MediaQuery.of(context).size.height,
-                decoration: getBackGroundBoxDecor(),
+//                decoration: getBackGroundBoxDecor(),
                 child: new SingleChildScrollView(
                     child: new Column(
                   verticalDirection: VerticalDirection.down,
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             height: 45,
             child: new RaisedButton(
-              color: Colors.white,
+              color: Colors.lightBlue,
               onPressed: f,
               child: getButtonText(text),
             )));
