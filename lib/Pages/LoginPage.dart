@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(forgetPassSentence,
                     style: TextStyle(
                         fontSize: 20,
-                        color: Colors.white,
+                        color: Colors.black,
                         decoration: TextDecoration.underline)))));
   }
 
