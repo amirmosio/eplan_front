@@ -7,30 +7,8 @@ import 'package:flutter/material.dart';
 ///////////// Demo data //////////////
 final columns = 7;
 final rows = 13;
-var haft = [
-  'شنبه',
-  'یکشنبه',
-  'دوشنبه',
-  'سه شنبه',
-  'چهارشنبه',
-  'پنجشنبه',
-  'جمعه'
-];
-var dark = [
-  'دیفرانسیل',
-  'جبر و احتال',
-  'گسسته',
-  'حسابان',
-  'فیزیک پیش',
-  'فیزیک پیش',
-  'قیزیک3',
-  'شیمی 2',
-  'شیمی پیش',
-  'عربی',
-  'قرابت معنایی',
-  'دینی پیش',
-  'پیام آیه'
-];
+
+
 
 List<List<String>> _makeData() {
   final List<List<String>> output = [];
@@ -45,10 +23,10 @@ List<List<String>> _makeData() {
 }
 
 /// Simple generator for column title
-List<String> _makeTitleColumn() => List.generate(columns, (i) => haft[i]);
+List<String> _makeTitleColumn() => List.generate(columns, (i) => days[i]);
 
 /// Simple generator for row title
-List<String> _makeTitleRow() => List.generate(rows, (i) => dark[i]);
+List<String> _makeTitleRow() => List.generate(rows, (i) => lessons[i]);
 
 ///////////////////// Demo data
 class LoginPage extends StatefulWidget {

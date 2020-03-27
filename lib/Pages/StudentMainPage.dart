@@ -1,5 +1,7 @@
 import 'package:eplanfront/Pages/Chart/StudentStudyChart.dart';
 import 'package:eplanfront/Pages/ChatRoom/chatscreen.dart';
+import 'package:eplanfront/Pages/TeacherTable/TeacherTable.dart';
+import 'package:eplanfront/Pages/TeacherTable/TeacherTableRowFields.dart';
 import 'package:eplanfront/Values/Models.dart';
 import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
@@ -53,9 +55,10 @@ class _UserPageState extends State<UserPage> {
   String _currentTitle;
   int _selectedIndex = 0;
 
-  ChatScreen chatRoom;
-  StickyHeadersTable studentTable;
-  StudentStudyChart studentStudyChart;
+  Widget teacherTable;
+  Widget chatRoom;
+  Widget studentTable;
+  Widget studentStudyChart;
 
   _UserPageState(
       {@required this.data,
@@ -72,7 +75,7 @@ class _UserPageState extends State<UserPage> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: Text(_currentTitle == null ? tableTitle : _currentTitle),
+            title: Text(_currentTitle == null ? blueNoteBook : _currentTitle),
             backgroundColor: Colors.lightBlue,
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -80,8 +83,12 @@ class _UserPageState extends State<UserPage> {
 
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.black),
-                title: Text('خانه'),
+                icon: Icon(Icons.schedule, color: Colors.black),
+                title: Text('برنامه مشاور'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.note, color: Colors.lightBlue),
+                title: Text('دفترچه آبی'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.message, color: Colors.black),
@@ -100,16 +107,18 @@ class _UserPageState extends State<UserPage> {
             selectedItemColor: Colors.amber[800],
             onTap: _onItemTapped,
           ),
-          body: _currentPage == null ? getNewStickyTable() : _currentPage),
+          body: _currentPage == null ? TeacherTableFields(): _currentPage),
     );
   }
 
   void _onItemTapped(int index) {
     if (index == 0) {
-      _studentTableState();
+      _teacherTable();
     } else if (index == 1) {
-      _chatRoomState();
+      _studentTableState();
     } else if (index == 2) {
+      _chatRoomState();
+    } else if (index == 3) {
       _studentChartState();
     }
     setState(() {
@@ -129,12 +138,22 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  void _teacherTable() {
+    if (teacherTable == null) {
+      teacherTable = TeacherTableFields();
+    }
+    setState(() {
+      _currentTitle = teacherTableTitle;
+      _currentPage = teacherTable;
+    });
+  }
+
   void _studentTableState() {
     if (studentTable == null) {
       studentTable = getNewStickyTable();
     }
     setState(() {
-      _currentTitle = tableTitle;
+      _currentTitle = blueNoteBook;
       _currentPage = studentTable;
     });
   }
