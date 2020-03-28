@@ -5,6 +5,7 @@ String haveAccount = "استفاده از اکانت های قبلی";
 String chartTitle = "نمودار ها";
 String blueNoteBook = "جدول هفتگی";
 String teacherTableTitle = "برنامه پیشنهادی مشاور";
+String teacherProfileTitle = "پروفایل مشاور";
 
 List<String> days = [
   'شنبه',

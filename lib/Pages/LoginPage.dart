@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 final columns = 7;
 final rows = 13;
 
-
-
 List<List<String>> _makeData() {
   final List<List<String>> output = [];
   for (int i = 0; i < columns; i++) {
@@ -52,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         title: 'Welcome to Flutter',
         home: new Scaffold(
             body: Container(
-              height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height,
 //                decoration: getBackGroundBoxDecor(),
                 child: new SingleChildScrollView(
                     child: new Column(
@@ -62,7 +60,12 @@ class _LoginPageState extends State<LoginPage> {
                     getUsernameTextField("Username"),
                     getPasswordTextField(),
                     getMatchParentWidthButton(loginLabel, () {
-                      navigateToSubPage(context, UserPage(data: _makeData(), titleColumn: _makeTitleColumn(), titleRow: _makeTitleRow()));
+                      navigateToSubPage(
+                          context,
+                          UserPage(
+                              data: _makeData(),
+                              titleColumn: _makeTitleColumn(),
+                              titleRow: _makeTitleRow()));
                     }, [0.0, 20.0]),
                     getForgetPasswordText()
                   ],
@@ -79,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 50),
         child: TextField(
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 15),
             obscureText: _passwordObscure,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock),
@@ -98,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: TextField(
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 15),
             obscureText: false,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.supervisor_account),
@@ -111,15 +114,21 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget getForgetPasswordText() {
     return new GestureDetector(
-        onTap: () {}, //TODO
-        child: new Center(
-            child: new Padding(
-                padding: EdgeInsets.all(5),
-                child: Text(forgetPassSentence,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        decoration: TextDecoration.underline)))));
+      onTap: () {}, //TODO
+      child: new Center(
+        child: new Padding(
+          padding: EdgeInsets.all(5),
+          child: Text(
+            forgetPassSentence,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+                decoration: TextDecoration.underline),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget getMatchParentWidthButton(String text, Function f, List margin) {

@@ -1,10 +1,12 @@
 import 'package:eplanfront/Pages/Chart/StudentStudyChart.dart';
 import 'package:eplanfront/Pages/ChatRoom/chatscreen.dart';
+import 'package:eplanfront/Pages/TeacherProfile.dart';
 import 'package:eplanfront/Pages/TeacherTable/TeacherTable.dart';
 import 'package:eplanfront/Pages/TeacherTable/TeacherTableRowFields.dart';
 import 'package:eplanfront/Values/Models.dart';
 import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 import 'package:web_socket_channel/io.dart';
@@ -33,6 +35,15 @@ List<LinearSales> pieData = [
 final channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
 String username = "Mostafa";
 
+String teacherName = "Mostafa Amiri";
+String proURL =
+    "http://res.cloudinary.com/kennyy/image/upload/v1531317427/avatar_z1rc6f.png";
+String bio = "سلام" +
+    "\n" +
+    "من مشاور برای دانش اموزان کنکوری عزیز هستم." +
+    "\n" +
+    "تمام هدف من بالا بردن کارایی دانش اموزان برای امادگی نهایی ست.";
+
 //////////////////// Demo Data /////////////////////////
 
 class UserPage extends StatefulWidget {
@@ -59,6 +70,7 @@ class _UserPageState extends State<UserPage> {
   Widget chatRoom;
   Widget studentTable;
   Widget studentStudyChart;
+  Widget teacherProfile;
 
   _UserPageState(
       {@required this.data,
@@ -73,9 +85,13 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Text(_currentTitle == null ? blueNoteBook : _currentTitle),
+            title: Text(
+              _currentTitle == null ? blueNoteBook : _currentTitle,
+              textDirection: TextDirection.rtl,
+            ),
             backgroundColor: Colors.lightBlue,
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -83,7 +99,7 @@ class _UserPageState extends State<UserPage> {
 
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.schedule, color: Colors.black),
+                icon: Icon(Icons.schedule, color: Colors.green),
                 title: Text('برنامه مشاور'),
               ),
               BottomNavigationBarItem(
@@ -91,7 +107,7 @@ class _UserPageState extends State<UserPage> {
                 title: Text('دفترچه آبی'),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.message, color: Colors.black),
+                icon: Icon(Icons.message, color: Colors.orange),
                 title: Text('چت روم'),
               ),
               BottomNavigationBarItem(
@@ -99,7 +115,7 @@ class _UserPageState extends State<UserPage> {
                 title: Text('نمودارها'),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.account_box, color: Colors.black),
+                icon: Icon(Icons.account_box, color: Colors.pink),
                 title: Text('پروفایل'),
               ),
             ],
@@ -107,7 +123,7 @@ class _UserPageState extends State<UserPage> {
             selectedItemColor: Colors.amber[800],
             onTap: _onItemTapped,
           ),
-          body: _currentPage == null ? TeacherTableFields(): _currentPage),
+          body: _currentPage == null ? TeacherTableFields() : _currentPage),
     );
   }
 
@@ -120,6 +136,8 @@ class _UserPageState extends State<UserPage> {
       _chatRoomState();
     } else if (index == 3) {
       _studentChartState();
+    } else if (index == 4) {
+      _teacherProState();
     }
     setState(() {
       _selectedIndex = index;
@@ -177,6 +195,17 @@ class _UserPageState extends State<UserPage> {
     setState(() {
       _currentTitle = chartTitle;
       _currentPage = studentStudyChart;
+    });
+  }
+
+  void _teacherProState() {
+    if (teacherProfile == null) {
+      teacherProfile = new TeacherProfile(
+          teacherName: teacherName, teacherBio: bio, teacherProFileURL: proURL);
+    }
+    setState(() {
+      _currentTitle = teacherProfileTitle;
+      _currentPage = teacherProfile;
     });
   }
 }

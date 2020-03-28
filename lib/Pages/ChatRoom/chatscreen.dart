@@ -90,16 +90,16 @@ class ChatScreenState extends State<ChatScreen> {
             itemCount: _messages.length,
           ),
         ),
-        StreamBuilder(
-          stream: widget.channel.stream,
-          builder: (context, snapshot) {
-            print(snapshot.hasData);
-            if (snapshot.hasData) {
-              _handleReceive('${snapshot.data}');
-            }
-            return new SizedBox(width: 0, height: 0);
-          },
-        ),
+//        StreamBuilder(
+//          stream: widget.channel.stream,
+//          builder: (context, snapshot) {
+//            print(snapshot.hasData);
+//            if (snapshot.hasData) {
+//              _handleReceive('${snapshot.data}');
+//            }
+//            return new SizedBox(width: 0, height: 0);
+//          },
+//        ),
         new Container(
           decoration: new BoxDecoration(
             color: Theme.of(context).cardColor,
@@ -114,6 +114,5 @@ class ChatScreenState extends State<ChatScreen> {
   void dispose() {
     widget.channel.sink.close();
     super.dispose();
-    print("hello");
   }
 }

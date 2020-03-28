@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, margin[0], 20, margin[1]),
         child: TextFormField(
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 15),
             obscureText: _passwordObscure,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock),
@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(20, margin[0], 20, margin[1]),
         child: TextField(
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 15),
             obscureText: false,
             decoration: InputDecoration(
               prefixIcon: prefixIcon,
