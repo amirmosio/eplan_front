@@ -1,3 +1,4 @@
+import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -18,12 +19,10 @@ class ChatScreenState extends State<ChatScreen> {
   WebSocketChannel channel;
   final TextEditingController _chatController = new TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[
-    new ChatMessage(
-        text: "Oh!Just working around...", name: "Mostafa", receiveSent: false),
-    new ChatMessage(
-        text: "What are you doing?", name: "You", receiveSent: true),
-    new ChatMessage(text: "Hi", name: "Mostafa", receiveSent: false),
-    new ChatMessage(text: "Hello", name: "You", receiveSent: true),
+    new ChatMessage(text: "بفرما", name: "Mostafa", receiveSent: false),
+    new ChatMessage(text: "من یه سوال داشتم؟", name: "You", receiveSent: true),
+    new ChatMessage(text: "سلام", name: "Mostafa", receiveSent: false),
+    new ChatMessage(text: "سلام", name: "You", receiveSent: true),
   ];
 
   ChatScreenState(this.name, this.channel);
@@ -55,19 +54,42 @@ class ChatScreenState extends State<ChatScreen> {
           child: new Container(
             child: new Row(
               children: <Widget>[
-                new Flexible(
-                    child: new Container(
-                        padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
-                        child: new TextField(
-                          decoration: new InputDecoration.collapsed(
-                              hintText: "Starts typing ..."),
-                          controller: _chatController,
-                          onSubmitted: _handleSubmit,
-                        ))),
                 new Container(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(2),
                   child: new IconButton(
-                    icon: new Icon(Icons.send),
+                    icon: new Icon(
+                      Icons.image,
+                      color: CustomTheme.theme[2],
+                    ),
+                    onPressed: () => _handleSubmit(_chatController.text),
+                  ),
+                ),
+                new Flexible(
+                  child: new Container(
+                    padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    child: new TextField(
+                      decoration: new InputDecoration.collapsed(
+                          hintText: "Starts typing ..."),
+                      controller: _chatController,
+                      onSubmitted: _handleSubmit,
+                    ),
+                  ),
+                ),
+                new Container(
+                  child: new IconButton(
+                    icon: new Icon(
+                      Icons.send,
+                      color: CustomTheme.theme[2],
+                    ),
+                    onPressed: () => _handleSubmit(_chatController.text),
+                  ),
+                ),
+                new Container(
+                  child: new IconButton(
+                    icon: new Icon(
+                      Icons.settings_voice,
+                      color: CustomTheme.theme[2],
+                    ),
                     onPressed: () => _handleSubmit(_chatController.text),
                   ),
                 )

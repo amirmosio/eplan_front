@@ -3,8 +3,8 @@ String registerLabel = "ثبت نام";
 String forgetPassSentence = "رمز عبور خود را فراموش کردم...";
 String haveAccount = "استفاده از اکانت های قبلی";
 String chartTitle = "نمودار ها";
-String blueNoteBook = "جدول هفتگی";
-String teacherTableTitle = "برنامه پیشنهادی مشاور";
+String blueNoteBook = "جدول هفتگی آبی";
+String teacherTableTitle = "برنامه هفتگی مشاور";
 String teacherProfileTitle = "پروفایل مشاور";
 
 List<String> days = [
@@ -19,12 +19,12 @@ List<String> days = [
 
 List<String> lessons = [
   'دیفرانسیل',
-  'جبر و احتال',
+  'جبر و احتمال',
   'گسسته',
   'حسابان',
   'فیزیک پیش',
   'فیزیک پیش',
-  'قیزیک3',
+  'فیزیک3',
   'شیمی 2',
   'شیمی پیش',
   'عربی',

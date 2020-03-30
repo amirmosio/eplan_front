@@ -1,3 +1,4 @@
+import 'package:eplanfront/Pages/StudentList/StudentList.dart';
 import 'package:eplanfront/Pages/StudentMainPage.dart';
 import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
@@ -5,32 +6,31 @@ import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 
 ///////////// Demo data //////////////
-final columns = 7;
-final rows = 13;
+//final columns = 7;
+//final rows = 13;
 
-List<List<String>> _makeData() {
-  final List<List<String>> output = [];
-  for (int i = 0; i < columns; i++) {
-    final List<String> row = [];
-    for (int j = 0; j < rows; j++) {
-      row.add('T$i : L$j');
-    }
-    output.add(row);
-  }
-  return output;
-}
+//List<List<String>> _makeData() {
+//  final List<List<String>> output = [];
+//  for (int i = 0; i < columns; i++) {
+//    final List<String> row = [];
+//    for (int j = 0; j < rows; j++) {
+//      row.add('T$i : L$j');
+//    }
+//    output.add(row);
+//  }
+//  return output;
+//}
 
 /// Simple generator for column title
-List<String> _makeTitleColumn() => List.generate(columns, (i) => days[i]);
-
-/// Simple generator for row title
-List<String> _makeTitleRow() => List.generate(rows, (i) => lessons[i]);
+//List<String> _makeTitleColumn() => List.generate(columns, (i) => days[i]);
+//
+///// Simple generator for row title
+//List<String> _makeTitleRow() => List.generate(rows, (i) => lessons[i]);
 
 ///////////////////// Demo data
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key key}) : super(key: key);
 
-  final String title;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -38,6 +38,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _passwordObscure = true;
+  CustomTheme customTheme = new CustomTheme();
 
   BoxDecoration getBackGroundBoxDecor() {
     return BoxDecoration(
@@ -47,11 +48,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Welcome to Flutter',
         home: new Scaffold(
             body: Container(
                 height: MediaQuery.of(context).size.height,
-//                decoration: getBackGroundBoxDecor(),
+                color: CustomTheme.theme[0],
                 child: new SingleChildScrollView(
                     child: new Column(
                   verticalDirection: VerticalDirection.down,
@@ -60,12 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     getUsernameTextField("Username"),
                     getPasswordTextField(),
                     getMatchParentWidthButton(loginLabel, () {
-                      navigateToSubPage(
-                          context,
-                          UserPage(
-                              data: _makeData(),
-                              titleColumn: _makeTitleColumn(),
-                              titleRow: _makeTitleRow()));
+                      navigateToSubPage(context, new StudentList());
                     }, [0.0, 20.0]),
                     getForgetPasswordText()
                   ],
@@ -123,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
             textDirection: TextDirection.rtl,
             style: TextStyle(
                 fontSize: 20,
-                color: Colors.black,
+                color: CustomTheme.theme[3],
                 decoration: TextDecoration.underline),
           ),
         ),
@@ -138,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             height: 45,
             child: new RaisedButton(
-              color: Colors.lightBlue,
+              color: CustomTheme.theme[3],
               onPressed: f,
               child: getButtonText(text),
             )));

@@ -1,17 +1,25 @@
 import 'dart:math';
 
+import 'package:eplanfront/Pages/TeacherTable/TeacherTableField.dart';
+import 'package:eplanfront/Values/Models.dart';
 import 'package:eplanfront/Values/string.dart';
+import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TableRowField extends StatefulWidget {
   final String dayName;
   final List<Widget> _fields = [];
+  final MaxFieldNumber _maxField;
+  final Function setMaxState;
 
-  TableRowField({Key key, @required this.dayName}) : super(key: key);
+  TableRowField(this.setMaxState, this._maxField,
+      {Key key, @required this.dayName})
+      : super(key: key);
 
   @override
-  _TableRowFieldState createState() => _TableRowFieldState(dayName, _fields);
+  _TableRowFieldState createState() =>
+      _TableRowFieldState(_maxField, dayName, _fields, setMaxState);
 
   List<Widget> getFields() {
     return _fields;
@@ -21,24 +29,21 @@ class TableRowField extends StatefulWidget {
 class _TableRowFieldState extends State<TableRowField> {
   String dayName;
   List<Widget> _fields;
+  MaxFieldNumber _maxField;
+  Function setMaxState;
 
-  _TableRowFieldState(this.dayName, this._fields);
+  _TableRowFieldState(
+      this._maxField, this.dayName, this._fields, this.setMaxState);
 
   Widget build(BuildContext context) {
-    return new Row(
-      children: [getAddFieldIcon()] + _fields,
-      mainAxisAlignment: MainAxisAlignment.end,
-    );
-  }
-
-  Widget getRowElement(index) {
     return new Container(
-      child: index == 0
-          ? getAddFieldIcon()
-          : (_fields.length + 1 == index
-              ? getDay(dayName)
-              : _fields[index - 1]),
+      width: (_maxField.max) * 210.0 + 120,
       alignment: Alignment.centerRight,
+      child: new Row(
+        children: [getAddFieldIcon()] + _fields,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+      ),
     );
   }
 
@@ -46,12 +51,13 @@ class _TableRowFieldState extends State<TableRowField> {
     Widget icon = new RawMaterialButton(
       onPressed: () {
         setState(() {
-          _fields.add(getEmptyFragment());
+          _fields.add(TeacherField());
+          setMaxState(_fields.length);
         });
       },
       child: new Icon(
         Icons.add,
-        color: Colors.blue,
+        color: CustomTheme.theme[4],
         size: 35.0,
       ),
       shape: new CircleBorder(),
@@ -70,105 +76,5 @@ class _TableRowFieldState extends State<TableRowField> {
         height: 100,
         margin: EdgeInsets.all(5),
         child: icon);
-  }
-
-  Widget getEmptyFragment() {
-    Widget fields = new Column(
-      children: <Widget>[
-        new Padding(
-          padding: EdgeInsets.only(bottom: 2, top: 5, left: 5, right: 5),
-          child: new Container(
-            height: 40,
-            color: Color.fromARGB(150, 255, 255, 255),
-            child: new TextField(
-              style: TextStyle(fontSize: 15),
-              decoration: new InputDecoration(border: OutlineInputBorder()),
-            ),
-          ),
-        ),
-        new Padding(
-          padding: EdgeInsets.only(top: 5, bottom: 2, left: 5, right: 5),
-          child: new Container(
-              height: 40,
-              color: Color.fromARGB(150, 255, 255, 255),
-              child: new Row(
-                children: <Widget>[
-                  new Padding(
-                    padding:
-                        EdgeInsets.only(bottom: 2, top: 5, left: 10, right: 10),
-                    child: new Container(
-                      height: 40,
-                      width: 70,
-                      color: Color.fromARGB(150, 255, 255, 255),
-                      child: new TextField(
-                        style: TextStyle(fontSize: 15),
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            new InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ),
-                  Text('تا'),
-                  new Padding(
-                    padding:
-                        EdgeInsets.only(bottom: 2, top: 5, left: 10, right: 10),
-                    child: new Container(
-                      height: 40,
-                      width: 70,
-                      color: Color.fromARGB(150, 255, 255, 255),
-                      child: new TextField(
-                        style: TextStyle(fontSize: 15),
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            new InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-        )
-      ],
-    );
-    return new Container(
-        alignment: Alignment.center,
-        decoration: new BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: new BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        width: 200,
-        height: 100,
-        margin: EdgeInsets.all(5),
-        child: fields);
-  }
-
-  Widget getAllDays() {
-    List<Widget> dayWidgets = [];
-    days.forEach((day) => dayWidgets.add(getDay(day)));
-    return new Column(children: dayWidgets);
-  }
-
-  Widget getDay(String day) {
-    Widget text = Transform.rotate(
-      angle: pi / 2,
-      child: new Text(
-        day,
-        style: new TextStyle(color: Colors.black, fontSize: 17),
-        textDirection: TextDirection.rtl,
-      ),
-    );
-    return new Container(
-        alignment: Alignment.center,
-        decoration: new BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: new BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        width: 60,
-        height: 100,
-        margin: EdgeInsets.all(5),
-        child: text);
   }
 }

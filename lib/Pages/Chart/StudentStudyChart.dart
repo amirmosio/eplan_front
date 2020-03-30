@@ -1,6 +1,7 @@
 import 'package:eplanfront/Pages/Chart/SimpleBarChart.dart';
 import 'package:eplanfront/Pages/Chart/CircularChart.dart';
 import 'package:eplanfront/Values/Models.dart';
+import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 
 class StudentStudyChart extends StatefulWidget {
@@ -30,8 +31,9 @@ class _StudentChartState extends State<StudentStudyChart> {
           children: <Widget>[
             new Padding(
                 padding: EdgeInsets.all(20),
-                child: new Text("نمودار روزانه درسی؟؟؟",
-                    style: TextStyle(color: Colors.black, fontSize: 15))),
+                child: new Text("نمودار روزانه درسی",
+                    style:
+                        TextStyle(color: CustomTheme.theme[3], fontSize: 15))),
             new Container(
               child: PieOutsideLabelChart.withSampleData(pieChartData),
               height: MediaQuery.of(context).size.width - 50,
@@ -39,8 +41,9 @@ class _StudentChartState extends State<StudentStudyChart> {
             ),
             new Padding(
                 padding: EdgeInsets.all(20),
-                child: new Text("نمودار روزانه ?؟؟؟",
-                    style: TextStyle(color: Colors.black, fontSize: 15))),
+                child: new Text("نمودار هفتگی",
+                    style:
+                        TextStyle(color: CustomTheme.theme[3], fontSize: 15))),
             new Container(
               child: SimpleBarChart.withSampleData(barChartData),
               height: 300,
@@ -57,6 +60,6 @@ class _StudentChartState extends State<StudentStudyChart> {
         padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
         child: new Center(
             child: Text(title,
-                style: TextStyle(fontSize: 25, color: Colors.black))));
+                style: TextStyle(fontSize: 25, color: CustomTheme.theme[3]))));
   }
 }

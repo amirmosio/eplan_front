@@ -1,3 +1,4 @@
+import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/material.dart';
 
 class TeacherProfile extends StatefulWidget {
@@ -53,11 +54,9 @@ class _TeacherProfileState extends State<TeacherProfile>
     return new Center(
       child: new Container(
         padding: EdgeInsets.all(20),
-        child: new CircleAvatar(
-          radius: 80,
-          child:Image.network(url)
+        child: new CircleAvatar(radius: 80, child: Image.network(url)
 //          child: Image.asset('assets/img/pro.'),
-        ),
+            ),
       ),
     );
   }
@@ -68,7 +67,7 @@ class _TeacherProfileState extends State<TeacherProfile>
       child: Center(
         child: new Text(
           name,
-          style: new TextStyle(color: Colors.black, fontSize: 20),
+          style: new TextStyle(color: CustomTheme.theme[3], fontSize: 20),
         ),
       ),
     );
@@ -83,11 +82,11 @@ class _TeacherProfileState extends State<TeacherProfile>
           child: Text(
             bio,
             textDirection: TextDirection.rtl,
-            style: new TextStyle(color: Colors.black, fontSize: 15),
+            style: new TextStyle(color: CustomTheme.theme[0], fontSize: 15),
           ),
           decoration: new BoxDecoration(
               borderRadius: new BorderRadius.all(Radius.circular(10)),
-              color: Colors.blueGrey),
+              color: CustomTheme.theme[1]),
         ),
       ),
     );

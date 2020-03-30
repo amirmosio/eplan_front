@@ -1,4 +1,5 @@
 import 'package:eplanfront/Pages/TeacherTable/TeacherTableRowFields.dart';
+import 'package:eplanfront/Values/Models.dart';
 import 'package:eplanfront/Values/string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as math;
@@ -22,6 +23,7 @@ class TeacherTableFields extends StatefulWidget {
 
 class _TeacherTableFieldsState extends State<TeacherTableFields> {
   List<Widget> _fieldRows;
+  MaxFieldNumber _maxField = MaxFieldNumber();
 
   _TeacherTableFieldsState(this._fieldRows);
 
@@ -37,6 +39,7 @@ class _TeacherTableFieldsState extends State<TeacherTableFields> {
               new Container(
                 child: new Column(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
                     children: _fieldRows),
                 alignment: Alignment.bottomRight,
               ),
@@ -55,9 +58,18 @@ class _TeacherTableFieldsState extends State<TeacherTableFields> {
   List<Widget> getTeacherFieldList() {
     List<Widget> addIcons = [];
     for (int index = 0; index < days.length; index++) {
-      addIcons.add(TableRowField(dayName: days[index]));
+      addIcons.add(
+          TableRowField(increaseMaxField, _maxField, dayName: days[index]));
     }
     return addIcons;
+  }
+
+  void increaseMaxField(int max) {
+    setState(() {
+      if (max > _maxField.max) {
+        _maxField.max  = max;
+      }
+    });
   }
 
   List<Widget> getAllDays() {
@@ -71,19 +83,19 @@ class _TeacherTableFieldsState extends State<TeacherTableFields> {
       angle: pi / 2,
       child: new Text(
         day,
-        style: new TextStyle(color: Colors.black, fontSize: 17),
+        style: new TextStyle(color: Colors.black, fontSize: 15),
         textDirection: TextDirection.rtl,
       ),
     );
     return new Container(
         alignment: Alignment.center,
         decoration: new BoxDecoration(
-          color: Colors.lightBlue,
+          color: Colors.grey,
           borderRadius: new BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        width: 60,
+        width: 70,
         height: 100,
         margin: EdgeInsets.all(5),
         child: text);

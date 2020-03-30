@@ -42,6 +42,7 @@ class PieOutsideLabelChart extends StatelessWidget {
       new charts.Series<LinearSales, String>(
         id: 'Sales',
         domainFn: (LinearSales sales, _) => sales.year,
+        colorFn: (LinearSales sales, _) => sales.color,
         measureFn: (LinearSales sales, _) => sales.sales,
         data: data,
         // Set a label accessor to control the text of the arc label.

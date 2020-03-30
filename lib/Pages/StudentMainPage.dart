@@ -2,34 +2,36 @@ import 'package:eplanfront/Pages/Chart/StudentStudyChart.dart';
 import 'package:eplanfront/Pages/ChatRoom/chatscreen.dart';
 import 'package:eplanfront/Pages/TeacherProfile.dart';
 import 'package:eplanfront/Pages/TeacherTable/TeacherTable.dart';
-import 'package:eplanfront/Pages/TeacherTable/TeacherTableRowFields.dart';
 import 'package:eplanfront/Values/Models.dart';
-import 'package:eplanfront/Values/Utils.dart';
 import 'package:eplanfront/Values/string.dart';
+import 'package:eplanfront/Values/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+import 'BlueTable/BlueTable.dart';
 
 /////////////////////// Demo Data ////////////////////
 
 List<OrdinalSales> barData = [
-  new OrdinalSales("شنبه", 20),
-  new OrdinalSales("یک شنبه", 22),
-  new OrdinalSales("دو شنبه", 24),
-  new OrdinalSales("سه شنبه", 20),
-  new OrdinalSales("چهارشنبه", 22),
-  new OrdinalSales("پنج شنبه", 24),
-  new OrdinalSales("جمعه", 20),
+  new OrdinalSales("شنبه", 13),
+  new OrdinalSales("یک شنبه", 12),
+  new OrdinalSales("دو شنبه", 3),
+  new OrdinalSales("سه شنبه", 8),
+  new OrdinalSales("چهارشنبه", 10),
+  new OrdinalSales("پنج شنبه", 6),
+  new OrdinalSales("جمعه", 10),
 ];
 
 List<LinearSales> pieData = [
-  new LinearSales("ریاضی", 100),
-  new LinearSales("ادبیات", 75),
-  new LinearSales("علوم", 25),
-  new LinearSales("زبان انگلیسی", 80),
-  new LinearSales("عربی", 5),
-  new LinearSales("شیمی", 25)
+  new LinearSales("ریاضی", 100, charts.Color.fromHex(code: "#505050")),
+  new LinearSales("ادبیات", 75, charts.Color.fromHex(code: "#646464")),
+  new LinearSales("علوم", 25, charts.Color.fromHex(code: "#787878")),
+  new LinearSales("زبان انگلیسی", 80, charts.Color.fromHex(code: "#8c8c8c")),
+  new LinearSales("عربی", 5, charts.Color.fromHex(code: "#a0a0a0")),
+  new LinearSales("شیمی", 25, charts.Color.fromHex(code: "#b4b4b4"))
 ];
 
 final channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
@@ -92,11 +94,10 @@ class _UserPageState extends State<UserPage> {
               _currentTitle == null ? blueNoteBook : _currentTitle,
               textDirection: TextDirection.rtl,
             ),
-            backgroundColor: Colors.lightBlue,
+            backgroundColor: CustomTheme.theme[4],
+            centerTitle: true,
           ),
           bottomNavigationBar: BottomNavigationBar(
-//            selectedLabelStyle: ,
-
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.schedule, color: Colors.green),
@@ -104,11 +105,11 @@ class _UserPageState extends State<UserPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.note, color: Colors.lightBlue),
-                title: Text('دفترچه آبی'),
+                title: Text('دفترچه برنامه ریزی'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.message, color: Colors.orange),
-                title: Text('چت روم'),
+                title: Text('گفتگو'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.show_chart, color: Colors.black),
@@ -122,8 +123,12 @@ class _UserPageState extends State<UserPage> {
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.amber[800],
             onTap: _onItemTapped,
+            unselectedItemColor: Colors.green,
           ),
-          body: _currentPage == null ? TeacherTableFields() : _currentPage),
+          body: new Container(
+            child: _currentPage == null ? TeacherTableFields() : _currentPage,
+            color: CustomTheme.theme[0],
+          )),
     );
   }
 
@@ -145,15 +150,19 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget getNewStickyTable() {
-    return StickyHeadersTable(
-      columnsLength: titleColumn.length,
-      rowsLength: titleRow.length,
-      columnsTitleBuilder: (i) => Text(titleColumn[i]),
-      rowsTitleBuilder: (i) => Text(titleRow[i]),
-      contentCellBuilder: (i, j) =>
-          Container(height: 50, width: 50, child: TextField()),
-      legendCell: Text(' '),
-    );
+//    return StickyHeadersTable(
+//      columnsLength: titleColumn.length,
+//      rowsLength: titleRow.length,
+//      columnsTitleBuilder: (i) => Text(titleColumn[i]),
+//      rowsTitleBuilder: (i) => Text(
+//        titleRow[i],
+//        textAlign: TextAlign.center,
+//      ),
+//      contentCellBuilder: (i, j) =>
+//          Container(height: 50, width: 50, child: TextField()),
+//      legendCell: Text(''),
+//    );
+    return BlueTable();
   }
 
   void _teacherTable() {

@@ -23,11 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Welcome to Flutter',
         home: new Scaffold(
           body: Container(
               height: MediaQuery.of(context).size.height,
-//              decoration: getBackGroundBoxDecor(),
+              color: CustomTheme.theme[0],
               child: new SingleChildScrollView(
                   child: new Column(
                 verticalDirection: VerticalDirection.down,
@@ -109,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Text(haveAccount,
                     style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
+                        color: CustomTheme.theme[3],
                         decoration: TextDecoration.underline)))));
   }
 
@@ -120,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
         width: double.infinity,
         height: 45,
         child: new RaisedButton(
-          color: Colors.lightBlue,
+          color: CustomTheme.theme[3],
           onPressed: f,
           child: getButtonText(text),
         ),

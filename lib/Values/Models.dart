@@ -9,6 +9,11 @@ class OrdinalSales {
 class LinearSales {
   final String year;
   final int sales;
+  final color;
 
-  LinearSales(this.year, this.sales);
+  LinearSales(this.year, this.sales, this.color);
+}
+
+class MaxFieldNumber {
+  int max = 0;
 }
