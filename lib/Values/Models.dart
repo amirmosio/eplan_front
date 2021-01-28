@@ -1,17 +1,19 @@
-class OrdinalSales {
-  final String year;
-  final int sales;
 
-  OrdinalSales(this.year, this.sales);
-}
-
-/// Sample linear data type.
-class LinearSales {
+class BarAndLineChartDataPart {
   final String year;
   final int sales;
   final color;
 
-  LinearSales(this.year, this.sales, this.color);
+  BarAndLineChartDataPart(this.year, this.sales,this.color);
+}
+
+/// Sample linear data type.
+class CircularChartModel {
+  final String title;
+  final int value;
+  final color;
+
+  CircularChartModel(this.title, this.value, this.color);
 }
 
 class MaxFieldNumber {

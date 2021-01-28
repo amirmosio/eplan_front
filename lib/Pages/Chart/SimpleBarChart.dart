@@ -1,16 +1,16 @@
 /// Bar chart example
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:eplanfront/Values/Models.dart';
-import 'package:eplanfront/Values/style.dart';
+import 'package:mhamrah/Values/Models.dart';
+import 'package:mhamrah/Values/style.dart';
 import 'package:flutter/material.dart';
 
 class SimpleBarChart extends StatelessWidget {
   final bool animate;
-  final List<OrdinalSales> data;
+  final List<BarAndLineChartDataPart> data;
 
   SimpleBarChart(this.data, {this.animate});
 
-  factory SimpleBarChart.withSampleData(List<OrdinalSales> data) {
+  factory SimpleBarChart.withSampleData(List<BarAndLineChartDataPart> data) {
     return new SimpleBarChart(
       data,
       // Disable animations for image tests.
@@ -28,18 +28,18 @@ class SimpleBarChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<OrdinalSales, String>> _createSampleData(
-      List<OrdinalSales> data) {
+  static List<charts.Series<BarAndLineChartDataPart, String>> _createSampleData(
+      List<BarAndLineChartDataPart> data) {
     return [
-      new charts.Series<OrdinalSales, String>(
+      new charts.Series<BarAndLineChartDataPart, String>(
         id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
-        insideLabelStyleAccessorFn: (OrdinalSales sales, _) {
+        insideLabelStyleAccessorFn: (BarAndLineChartDataPart sales, _) {
           final color = charts.MaterialPalette.white;
           return new charts.TextStyleSpec(color: color);
         },
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        fillColorFn: (BarAndLineChartDataPart sales, _) => sales.color,
+        domainFn: (BarAndLineChartDataPart sales, _) => sales.year,
+        measureFn: (BarAndLineChartDataPart sales, _) => sales.sales,
         data: data,
       )
     ];

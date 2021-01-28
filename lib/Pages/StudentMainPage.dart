@@ -1,220 +1,357 @@
-import 'package:eplanfront/Pages/Chart/StudentStudyChart.dart';
-import 'package:eplanfront/Pages/ChatRoom/chatscreen.dart';
-import 'package:eplanfront/Pages/TeacherProfile.dart';
-import 'package:eplanfront/Pages/TeacherTable/TeacherTable.dart';
-import 'package:eplanfront/Values/Models.dart';
-import 'package:eplanfront/Values/string.dart';
-import 'package:eplanfront/Values/style.dart';
+import 'dart:io';
+
+import 'package:mhamrah/ConnectionService/HTTPService.dart';
+import 'package:mhamrah/Models/UserMV.dart';
+import 'package:mhamrah/Pages/ChatRoom/ConsultantChannel/ChannelChatScreenView.dart';
+import 'package:mhamrah/Pages/ConsultantMainPage.dart';
+import 'package:mhamrah/Pages/SlideMainPage.dart';
+import 'package:mhamrah/Pages/User/FirstPage.dart';
+import 'package:mhamrah/Utils/AppUtils.dart';
+import 'package:mhamrah/Utils/LocalFileUtils.dart';
+import 'package:mhamrah/Utils/SnackAnFlushBarUtils.dart';
+import 'package:mhamrah/Values/Utils.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:mhamrah/Pages/ChatRoom/ChatScreen.dart';
+import 'package:mhamrah/Pages/ConsultantTable/ConsultantTable.dart';
+import 'package:mhamrah/Values/string.dart';
+import 'package:mhamrah/Values/style.dart' as prefix0;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:table_sticky_headers/table_sticky_headers.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fluttertoast/fluttertoast.dart';
 
-import 'BlueTable/BlueTable.dart';
+import 'BlueTable1/BlueTable1.dart';
+import 'BlueTable2/BlueTable2.dart';
+import 'ChatRoom/ChatContactList.dart';
+import 'StudentProfile/StudentProfile.dart';
 
 /////////////////////// Demo Data ////////////////////
 
-List<OrdinalSales> barData = [
-  new OrdinalSales("شنبه", 13),
-  new OrdinalSales("یک شنبه", 12),
-  new OrdinalSales("دو شنبه", 3),
-  new OrdinalSales("سه شنبه", 8),
-  new OrdinalSales("چهارشنبه", 10),
-  new OrdinalSales("پنج شنبه", 6),
-  new OrdinalSales("جمعه", 10),
-];
+class StudentMainPage extends StatefulWidget {
+  static String studentUsername;
+  ConsultantTable teacherTable;
+  Widget chatRoom;
+  ChatContactList chatContactList;
+  BlueTable1 studentTable1;
+  BlueTable2 studentTable2;
+  StudentProfile studentProfile;
+  Widget currentPage;
+  static StudentMainPageState state;
+  static int selectedIndex = 0;
 
-List<LinearSales> pieData = [
-  new LinearSales("ریاضی", 100, charts.Color.fromHex(code: "#505050")),
-  new LinearSales("ادبیات", 75, charts.Color.fromHex(code: "#646464")),
-  new LinearSales("علوم", 25, charts.Color.fromHex(code: "#787878")),
-  new LinearSales("زبان انگلیسی", 80, charts.Color.fromHex(code: "#8c8c8c")),
-  new LinearSales("عربی", 5, charts.Color.fromHex(code: "#a0a0a0")),
-  new LinearSales("شیمی", 25, charts.Color.fromHex(code: "#b4b4b4"))
-];
-
-final channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
-String username = "Mostafa";
-
-String teacherName = "Mostafa Amiri";
-String proURL =
-    "http://res.cloudinary.com/kennyy/image/upload/v1531317427/avatar_z1rc6f.png";
-String bio = "سلام" +
-    "\n" +
-    "من مشاور برای دانش اموزان کنکوری عزیز هستم." +
-    "\n" +
-    "تمام هدف من بالا بردن کارایی دانش اموزان برای امادگی نهایی ست.";
-
-//////////////////// Demo Data /////////////////////////
-
-class UserPage extends StatefulWidget {
-  UserPage(
-      {@required this.data,
-      @required this.titleColumn,
-      @required this.titleRow});
-
-  final List<List<String>> data;
-  final List<String> titleColumn;
-  final List<String> titleRow;
+  StudentMainPage(studentUsername) {
+    StudentMainPage.studentUsername = studentUsername;
+  }
 
   @override
-  _UserPageState createState() =>
-      _UserPageState(data: data, titleColumn: titleColumn, titleRow: titleRow);
+  StudentMainPageState createState() {
+    state = StudentMainPageState();
+    return state;
+  }
 }
 
-class _UserPageState extends State<UserPage> {
-  Widget _currentPage;
-  String _currentTitle;
-  int _selectedIndex = 0;
+class StudentMainPageState extends State<StudentMainPage> {
+  static double appbarHeightPercent = 18;
+  static double appbarDropDownHeight = 40;
+  static List<int> pageQueue = [];
+  static const kBottomNavigationBarHeight = 56.0;
+  static String selectedPlanName = "";
+  static int selectedDayIndex = 0;
+  static bool sharePageCurrentRoute = false;
+  static BuildContext sharedContext;
 
-  Widget teacherTable;
-  Widget chatRoom;
-  Widget studentTable;
-  Widget studentStudyChart;
-  Widget teacherProfile;
+  StudentMainPageState();
 
-  _UserPageState(
-      {@required this.data,
-      @required this.titleColumn,
-      @required this.titleRow});
+  bool hideBlue2Table() {
+    int type = LSM.getUserModeSync();
+    if (type == 0) {
+      return LSM.getConsultantSettingSync().hideBlue2Table;
+    } else if (type == 1) {
+      return LSM.getStudentSettingSync().hideBlue2Table;
+    }
+  }
 
-  final List<List<String>> data;
-  final List<String> titleColumn;
-  final List<String> titleRow;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pageQueue.add(0);
+    if (hideBlue2Table()) {
+      StudentMainPage.selectedIndex = 3;
+    } else {
+      StudentMainPage.selectedIndex = 4;
+    }
+    if (FirstPage.userType == 1) {
+      checkNewApplicationVersion();
+//      sendAppUsageData();
+    }
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              _currentTitle == null ? blueNoteBook : _currentTitle,
-              textDirection: TextDirection.rtl,
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Builder(
+        builder: (BuildContext context) {
+          FirstPage.mainContext = context;
+          return WillPopScope(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                bottomNavigationBar: BottomNavigationBar(
+                  items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: ImageIcon(
+                            AssetImage("assets/img/5.png"),
+                          ),
+                          label: kIsWeb ? "....." : 'پروفایل',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: ImageIcon(
+                            AssetImage("assets/img/3.png"),
+                          ),
+                          label: kIsWeb ? "....." : 'گفتگو',
+                        ),
+                      ] +
+                      (!hideBlue2Table()
+                          ? [
+                              BottomNavigationBarItem(
+                                icon: ImageIcon(
+                                  AssetImage("assets/img/2.png"),
+                                ),
+                                label: kIsWeb ? "....." : 'دفترچه ۲',
+                              )
+                            ]
+                          : []) +
+                      [
+                        BottomNavigationBarItem(
+                          icon: ImageIcon(
+                            AssetImage("assets/img/2.png"),
+                          ),
+                          label: kIsWeb ? "....." : 'دفترچه ۱',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.schedule),
+                          label: kIsWeb ? "....." : 'برنامه هفتگی',
+                        ),
+                      ],
+                  currentIndex: StudentMainPage.selectedIndex,
+                  selectedItemColor: Colors.amber[800],
+                  onTap: _onItemTapped,
+                  unselectedItemColor: Colors.green,
+                  selectedIconTheme:
+                      IconThemeData(size: 26, color: prefix0.Theme.darkText),
+                  unselectedIconTheme:
+                      IconThemeData(color: prefix0.Theme.darkText, size: 23),
+                  selectedLabelStyle:
+                      prefix0.getTextStyle(12, prefix0.Theme.darkText),
+                ),
+                body: Container(
+                  color: prefix0.Theme.mainBG,
+                  child: Container(
+                    child: widget.currentPage == null
+                        ? getConsultantTable()
+                        : widget.currentPage,
+                  ),
+                ),
+              ),
             ),
-            backgroundColor: CustomTheme.theme[4],
-            centerTitle: true,
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.schedule, color: Colors.green),
-                title: Text('برنامه مشاور'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.note, color: Colors.lightBlue),
-                title: Text('دفترچه برنامه ریزی'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message, color: Colors.orange),
-                title: Text('گفتگو'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart, color: Colors.black),
-                title: Text('نمودارها'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_box, color: Colors.pink),
-                title: Text('پروفایل'),
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[800],
-            onTap: _onItemTapped,
-            unselectedItemColor: Colors.green,
-          ),
-          body: new Container(
-            child: _currentPage == null ? TeacherTableFields() : _currentPage,
-            color: CustomTheme.theme[0],
-          )),
+            onWillPop: () async {
+              if (sharePageCurrentRoute) {
+                navigateToSubPage(
+                    sharedContext,
+                    SlideMainPage(
+                        defaultStudentUsername:
+                            StudentMainPage.studentUsername));
+                StudentMainPageState.sharePageCurrentRoute = false;
+                return false;
+              }
+              int prevPage = -1;
+              if (pageQueue.length > 1) {
+                prevPage = pageQueue[pageQueue.length - 1];
+                pageQueue.removeLast();
+              } else if (pageQueue.length == 1) {
+                if (pageQueue[0] == -1) {
+                  exit(0);
+                } else {
+                  prevPage = pageQueue[0];
+                  pageQueue.removeLast();
+                }
+              } else {
+                pageQueue.add(-1);
+                Future.delayed(Duration(seconds: 3)).then((_) {
+                  setState(() {
+                    pageQueue.removeLast();
+                  });
+                });
+                showFlutterToast(doublePressExitWarning);
+              }
+              if (prevPage != -1) {
+                changePage(prevPage);
+              }
+              return false;
+            },
+          );
+        },
+      ),
     );
   }
 
-  void _onItemTapped(int index) {
+  void changePage(int index) {
+    if (hideBlue2Table()) {
+      changePageWithOutBlue2Table(index);
+    } else {
+      changePageWithBlue2Table(index);
+    }
+  }
+
+  void changePageWithBlue2Table(int index) {
     if (index == 0) {
-      _teacherTable();
+      _studentProState();
     } else if (index == 1) {
-      _studentTableState();
+      _chatContactList();
     } else if (index == 2) {
-      _chatRoomState();
+      _studentTable2State();
     } else if (index == 3) {
-      _studentChartState();
+      _studentTable1State();
     } else if (index == 4) {
-      _teacherProState();
+      _teacherTable();
     }
     setState(() {
-      _selectedIndex = index;
+      StudentMainPage.selectedIndex = index;
     });
   }
 
-  Widget getNewStickyTable() {
-//    return StickyHeadersTable(
-//      columnsLength: titleColumn.length,
-//      rowsLength: titleRow.length,
-//      columnsTitleBuilder: (i) => Text(titleColumn[i]),
-//      rowsTitleBuilder: (i) => Text(
-//        titleRow[i],
-//        textAlign: TextAlign.center,
-//      ),
-//      contentCellBuilder: (i, j) =>
-//          Container(height: 50, width: 50, child: TextField()),
-//      legendCell: Text(''),
-//    );
-    return BlueTable();
+  void changePageWithOutBlue2Table(int index) {
+    if (index == 0) {
+      _studentProState();
+    } else if (index == 1) {
+      _chatContactList();
+    } else if (index == 2) {
+      _studentTable1State();
+    } else if (index == 3) {
+      _teacherTable();
+    }
+    setState(() {
+      StudentMainPage.selectedIndex = index;
+    });
+  }
+
+  void popToLoginPage() {
+    Navigator.of(context, rootNavigator: true)
+        .popUntil(ModalRoute.withName('/'));
+    navigateToSubPage(context, FirstPage());
+  }
+
+  void _onItemTapped(int index) {
+    StudentMainPageState.pageQueue = [StudentMainPage.selectedIndex];
+    changePage(index);
   }
 
   void _teacherTable() {
-    if (teacherTable == null) {
-      teacherTable = TeacherTableFields();
+    if (widget.teacherTable == null) {
+      widget.teacherTable = getConsultantTable();
     }
     setState(() {
-      _currentTitle = teacherTableTitle;
-      _currentPage = teacherTable;
+      widget.currentPage = widget.teacherTable;
     });
   }
 
-  void _studentTableState() {
-    if (studentTable == null) {
-      studentTable = getNewStickyTable();
+  void _studentTable1State() {
+    if (widget.studentTable1 == null) {
+      widget.studentTable1 = BlueTable1();
     }
     setState(() {
-      _currentTitle = blueNoteBook;
-      _currentPage = studentTable;
+      widget.currentPage = widget.studentTable1;
     });
   }
 
-  void _chatRoomState() {
-    if (chatRoom == null) {
-      chatRoom = ChatScreen(username: username, channel: channel);
+  void _studentTable2State() {
+    if (widget.studentTable2 == null) {
+      widget.studentTable2 = BlueTable2();
     }
-
     setState(() {
-      _currentTitle = username;
-      _currentPage = chatRoom;
+      widget.currentPage = widget.studentTable2;
     });
   }
 
-  void _studentChartState() {
-    if (studentStudyChart == null) {
-      studentStudyChart = new StudentStudyChart(
-          title: chartTitle, pieChartData: pieData, barChartData: barData);
+  void _chatRoomState(List<String> usernames) {
+    usernames.sort();
+    if (widget.chatRoom != null && widget.chatRoom is ChatScreen) {
+      if ((widget.chatRoom as ChatScreen).usernames.join(",") !=
+          usernames.join(",")) {
+        widget.chatRoom = ChatScreen(
+          this,
+          usernames,
+          key: ValueKey(usernames.join(",")),
+        );
+      }
+    } else {
+      widget.chatRoom = ChatScreen(this, usernames);
     }
+
     setState(() {
-      _currentTitle = chartTitle;
-      _currentPage = studentStudyChart;
+      widget.currentPage = widget.chatRoom;
     });
   }
 
-  void _teacherProState() {
-    if (teacherProfile == null) {
-      teacherProfile = new TeacherProfile(
-          teacherName: teacherName, teacherBio: bio, teacherProFileURL: proURL);
+  void _channelRoomState(String consUsernames) {
+    widget.chatRoom = ChannelChatScreenView(this, consUsernames);
+    setState(() {
+      widget.currentPage = widget.chatRoom;
+    });
+  }
+
+  void _chatContactList() {
+    if (widget.chatContactList == null) {
+      widget.chatContactList = ChatContactList(this);
     }
     setState(() {
-      _currentTitle = teacherProfileTitle;
-      _currentPage = teacherProfile;
+      widget.currentPage = widget.chatContactList;
     });
+  }
+
+  void chatRoomPage(List<String> usernames) {
+    if (hideBlue2Table()) {
+      StudentMainPageState.pageQueue.add(1);
+    } else {
+      StudentMainPageState.pageQueue.add(2);
+    }
+    _chatRoomState(usernames);
+  }
+
+  void studentChannelPage(String consUsername) {
+    if (hideBlue2Table()) {
+      StudentMainPageState.pageQueue.add(1);
+    } else {
+      StudentMainPageState.pageQueue.add(2);
+    }
+    _channelRoomState(consUsername);
+  }
+
+  void chatContactListPage() {
+    _chatContactList();
+  }
+
+  void _studentProState() {
+    if (widget.studentProfile == null) {
+      widget.studentProfile = StudentProfile(this);
+    }
+    setState(() {
+      widget.currentPage = widget.studentProfile;
+    });
+  }
+
+  Widget getConsultantTable() {
+    return ConsultantTable();
   }
 }

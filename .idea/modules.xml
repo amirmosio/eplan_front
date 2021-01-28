@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/eplanfront.iml" filepath="$PROJECT_DIR$/eplanfront.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/eplanfront_android.iml" filepath="$PROJECT_DIR$/android/eplanfront_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mhamrah.iml" filepath="$PROJECT_DIR$/mhamrah.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/mhamrah_android.iml" filepath="$PROJECT_DIR$/android/mhamrah_android.iml" />
     </modules>
   </component>
 </project>
